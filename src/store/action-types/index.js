@@ -1,8 +1,8 @@
 export const ACTION_STATUS = {
-  NOT_STARTED: 'NOT_STARTED',
-  IN_PROGRESS: 'IN_PROGRESS',
-  ERROR: 'ERROR',
-  SUCCESS: 'SUCCESS',
+  NOT_STARTED: "NOT_STARTED",
+  IN_PROGRESS: "IN_PROGRESS",
+  ERROR: "ERROR",
+  SUCCESS: "SUCCESS",
 };
 
 export const createActionTypes = (actionTypeName) => ({

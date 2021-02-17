@@ -1,0 +1,12 @@
+.radio-group {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px 0;
+}
+
+.forecast-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}

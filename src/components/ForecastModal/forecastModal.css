@@ -1,0 +1,24 @@
+.forecast-modal {
+  min-width: 300px;
+  max-width: 600px;
+  width: 100%;
+}
+
+.forecast-modal-body {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.forecast-modal article {
+  font-size: 18px;
+}
+
+.forecast-modal img {
+  max-width: 200px;
+}
+
+.forecast-modal-summary {
+  font-size: 24px !important;
+}

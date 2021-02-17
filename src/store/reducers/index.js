@@ -1,6 +1,6 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from "redux";
 
-import ForecastReducer from '../../pages/Forecast/reducers/forecast.reducer';
+import ForecastReducer from "../../pages/Forecast/reducers/forecast.reducer";
 
 const rootReducer = combineReducers({
   forecast: ForecastReducer,

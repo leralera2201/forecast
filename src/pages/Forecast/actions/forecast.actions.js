@@ -1,4 +1,4 @@
-import FORECAST_ACTION_TYPES from '../action-types/forecast.action-types';
+import FORECAST_ACTION_TYPES from "../action-types/forecast.action-types";
 
 export const fetchForecastStart = (lat, lng) => ({
   type: FORECAST_ACTION_TYPES.FORECAST_FETCH.START,
@@ -17,4 +17,8 @@ export const fetchForecastSuccess = (forecast) => ({
 export const fetchForecastError = (error) => ({
   type: FORECAST_ACTION_TYPES.FORECAST_FETCH.ERROR,
   payload: { error },
+});
+
+export const paginateForecast = () => ({
+  type: FORECAST_ACTION_TYPES.FORECAST_PAGINATE,
 });

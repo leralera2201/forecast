@@ -1,10 +1,7 @@
-
-import Forecast from './pages/Forecast/Forecast';
+import Forecast from "./pages/Forecast/Forecast";
 
 function App() {
-  return (
-    <Forecast />
-  );
+  return <Forecast />;
 }
 
 export default App;

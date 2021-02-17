@@ -1,25 +1,35 @@
-import { createSelector } from 'reselect';
+import { createSelector } from "reselect";
 
-import { ACTION_STATUS } from '../../../store/action-types';
+import { ACTION_STATUS } from "../../../store/action-types";
 
 export const forecastStateSelector = (state) => state.forecast;
 
 export const forecastFetchDataSelector = createSelector(
   forecastStateSelector,
-  ({ data }) => data,
+  ({ data }) => data
+);
+
+export const forecastItemsDataSelector = createSelector(
+  forecastFetchDataSelector,
+  ({ items }) => items
+);
+
+export const forecastCurrentItemsDataSelector = createSelector(
+  forecastFetchDataSelector,
+  ({ currentItems }) => currentItems
 );
 
 export const forecastFetchStatusSelector = createSelector(
   forecastStateSelector,
-  ({ status }) => status,
+  ({ status }) => status
 );
 
 export const forecastFetchErrorSelector = createSelector(
   forecastStateSelector,
-  ({ error }) => error,
+  ({ error }) => error
 );
 
 export const forecastFetchIsStatusInProgress = createSelector(
   forecastFetchStatusSelector,
-  (status) => status === ACTION_STATUS.IN_PROGRESS,
+  (status) => status === ACTION_STATUS.IN_PROGRESS
 );

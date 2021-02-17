@@ -1,0 +1,69 @@
+.daily-forecast {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 300px;
+  max-width: 450px;
+  height: 100%;
+}
+
+.daily-forecast-img {
+  max-height: 200px;
+  width: auto;
+}
+
+.daily-forecast-day,
+.daily-forecast-date-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #bf8944;
+}
+
+.daily-forecast-day {
+  font-size: 50px;
+  justify-content: flex-end;
+  padding-right: 10px;
+}
+
+.daily-forecast-date-item {
+  font-size: 30px;
+  justify-content: flex-start;
+  padding-left: 10px;
+}
+
+.daily-forecast-temperature {
+  text-align: center;
+  color: #808080;
+  font-size: 24px;
+}
+
+.daily-forecast-date-row {
+  border: 1px solid #bf8944;
+}
+.ant-card-body {
+  width: 100% !important;
+  height: 100% !important;
+}
+.daily-forecast-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.daily-forecast-summary {
+  text-align: center;
+  font-size: 24px;
+}
+
+.daily-forecast-wind {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wind-speed-img {
+  margin-left: 10px;
+  max-width: 20px;
+}

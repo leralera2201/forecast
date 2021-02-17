@@ -1,84 +1,134 @@
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Row, Col, Radio, Button } from "antd";
 
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import Loader from "../../components/Loader";
+import DailyForecast from "../../components/DailyForecast";
+import Error from "../../components/Error";
+import ForecastModal from "../../components/ForecastModal";
 
-import Loader from './../../components/Loader';
-import DailyForecast from './../../components/DailyForecast';
-
-import { fetchForecastStart } from './actions/forecast.actions';
-import { 
-  forecastFetchErrorSelector, 
+import {
+  fetchForecastStart,
+  paginateForecast,
+} from "./actions/forecast.actions";
+import {
+  forecastFetchErrorSelector,
   forecastFetchIsStatusInProgress,
-  forecastFetchDataSelector
-} 
-from './selectors/forecast.selectors';
+  forecastItemsDataSelector,
+  forecastCurrentItemsDataSelector,
+} from "./selectors/forecast.selectors";
 
+import "./forecast.css";
 
 export class Forecast extends Component {
+  state = {
+    value: 1,
+    isModalVisible: false,
+    modalInfo: {},
+  };
+
+  onChange = (e) => {
+    this.setState({
+      value: e.target.value,
+    });
+  };
+
   componentDidMount() {
-    if(navigator.geolocation) {
-      window.navigator.geolocation.getCurrentPosition(this.fetchForecast, console.error)
+    if (navigator.geolocation) {
+      window.navigator.geolocation.getCurrentPosition(
+        this.fetchForecast,
+        console.error
+      );
     }
   }
 
-  fetchForecast = ({ coords: { latitude, longitude }}) => {
-    const {
-      getForecast,
-    } = this.props;
+  fetchForecast = ({ coords: { latitude, longitude } }) => {
+    const { getForecast } = this.props;
     getForecast(latitude, longitude);
-  }
+  };
 
+  openModal = (id) => {
+    this.setState({ isModalVisible: true });
+    this.findForecast(id);
+  };
+
+  findForecast = (id) => {
+    const { items } = this.props;
+    const chosenItem = items.find((item) => item.uvIndex === id);
+    this.setState({ modalInfo: chosenItem });
+  };
+
+  closeModal = () => {
+    this.setState({ isModalVisible: false });
+  };
 
   render() {
-    const { loading, data, error } = this.props;
-    console.log(data)
-
+    const radioStyle = {
+      display: "block",
+      height: "30px",
+      lineHeight: "30px",
+    };
+    const { loading, items, currentItems, error, paginate } = this.props;
+    const { value, isModalVisible, modalInfo } = this.state;
     return (
-      <div className="container pt-5">
+      <>
         {loading && <Loader />}
-        {!loading && !error && data && (
-          // <div>sm</div>
-         data.daily.data.map(forecast => <DailyForecast key={forecast.time} forecast={forecast}/>)
-          // <Card>
-          //   <CardBody>
-          //     <CardTitle tag="h3">{book.title}</CardTitle>
-          //     <CardSubtitle tag="h6" className="mb-2 text-muted">
-          //       {book.description}
-          //     </CardSubtitle>
-          //     <CardText>{book.excerpt}</CardText>
-          //     <CardText tag="h5">
-          //       Page count:
-          //       {book.pageCount}
-          //     </CardText>
-          //     <CardText>
-          //       <small className="text-muted">
-          //         {moment(book.publishDate).fromNow()}
-          //       </small>
-          //     </CardText>
-          //     <Button onClick={() => this.deleteBook(book.id)} id="delete-book">
-          //       Delete this book
-          //     </Button>
-          //     <Button onClick={() => this.updateBook(book.id)} id="update-book">
-          //       Update this book
-          //     </Button>
-          //   </CardBody>
-          // </Card>
+        {!loading && !error && currentItems && (
+          <>
+            <Radio.Group
+              onChange={this.onChange}
+              value={value}
+              className="radio-group"
+            >
+              <Radio style={radioStyle} value={1}>
+                Celsius
+              </Radio>
+              <Radio style={radioStyle} value={2}>
+                Farengate
+              </Radio>
+            </Radio.Group>
+            <Row>
+              {currentItems.map((forecast) => (
+                <Col xs={24} sm={12} md={8} lg={6} key={forecast.time}>
+                  <DailyForecast
+                    forecast={forecast}
+                    value={value}
+                    openModal={this.openModal}
+                  />
+                </Col>
+              ))}
+            </Row>
+            {items.length !== currentItems.length && (
+              <div className="forecast-button">
+                <Button type="primary" onClick={paginate}>
+                  Load more
+                </Button>
+              </div>
+            )}
+            <ForecastModal
+              isModalVisible={isModalVisible}
+              closeModal={this.closeModal}
+              modalInfo={modalInfo}
+            />
+          </>
         )}
-        {/* {!error && !loading && !book && <div id="no-book">No book</div>} */}
-        {/* {error && <Error error={error} />} */}
-      </div>
+        {!error && !loading && items.length === 0 && <div>No forecast</div>}
+        {error && <Error error={error} />}
+      </>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  data: forecastFetchDataSelector(state),
+  items: forecastItemsDataSelector(state),
+  currentItems: forecastCurrentItemsDataSelector(state),
   loading: forecastFetchIsStatusInProgress(state),
   error: forecastFetchErrorSelector(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getForecast: (lat, lng) => dispatch(fetchForecastStart(lat, lng)),
+  paginate: () => dispatch(paginateForecast()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Forecast);
